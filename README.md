@@ -1,4 +1,4 @@
-# targoNode
+# Targo Node
 
 ### The Project is under construction
 
