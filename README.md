@@ -3,6 +3,9 @@
 ### The Project is under construction
 
 This projects is aimed to automate the installation of Red Hat Openshift Cluster	
+
+Content:
+--------
 [ ] Create a bastion host with all the network requirment needed by the cluster, 
   - dns
   - LoadBalancer
