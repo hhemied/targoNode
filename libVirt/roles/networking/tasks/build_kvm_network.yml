@@ -1,0 +1,41 @@
+---
+
+# get the default interface
+- name: get network default interface
+  set_fact:
+    host_iface: "{{ ansible_default_ipv4.interface }}"
+
+# check network if exists, if not run a block to create it
+# - name: list net
+#   virt_net:
+#     command: list_nets
+#   register: net_list 
+
+
+# Building the cluster network..
+- name: "creating the {{cluster_id }} network"
+  block:
+    - name: Move the config file 
+      template:
+         src: templates/network.xml.j2
+         dest:  /root/network.xml
+    - name: "Define the network {{ cluster_id }} network"
+      shell: "virsh net-define --file /root/network.xml"
+        
+    - name: "Start {{ cluster_id }} network"
+      shell: "virsh net-start {{ cluster_id }}"
+
+    - name: "autoStart {{ cluster_id }} network"
+      shell: "virsh net-autostart {{ cluster_id }}"
+
+    - name: "Configure {{ cluster_id }} network in NetworkManager"
+      shell: "nmcli connection modify {{ cluster_id }} connection.autoconnect 0"
+
+  # when: 'cluster_id not in net_list.list_nets'
+
+  rescue:
+    - debug:
+        msg: "ERR: Something went wrong..."
+
+
+...

@@ -1,0 +1,148 @@
+---
+- name: Create the directory structure for the PXE boot
+  file:
+     path: /var/lib/tftpboot/pxelinux.cfg
+     state: directory
+     recurse: true
+     owner: root
+     group: root
+
+
+- name: Copy Required files and directory for PXE
+  copy:
+    src: "{{ item }}"
+    dest: /var/lib/tftpboot/
+    remote_src: yes
+  with_fileglob:
+    - "/usr/share/syslinux/*"
+  ignore_errors: true
+    
+
+- name: Configure the webserver to serve PXE files
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^Listen '
+    insertafter: '^#Listen '
+    line: Listen 8080
+
+- name: Build Openshift directory structure for PXE
+  file:
+    path: /var/lib/tftpboot/openshift{{ openshift_version }}/{{ openshift_version }}
+    state: directory
+    recurse: true
+    owner: root
+    group: root
+
+
+- name: Get the RHCOS dependencies
+  get_url:
+    url: "{{ item }}"
+    dest: /var/lib/tftpboot/openshift{{ openshift_version }}/{{ openshift_version }}
+  loop:
+    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/4.4.3/rhcos-4.4.3-x86_64-installer-kernel-x86_64
+    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/4.4.3/rhcos-4.4.3-x86_64-installer-initramfs.x86_64.img
+  when: "openshift_version == '4.4'"
+
+
+- name: Get the RHCOS dependencies
+  get_url:
+    url: "{{ item }}"
+    dest: /var/lib/tftpboot/openshift{{ openshift_version }}/{{ openshift_version }}
+  loop:
+    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/rhcos-4.5.2-x86_64-installer-kernel-x86_64 
+    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/rhcos-4.5.2-x86_64-installer-initramfs.x86_64.img
+  when: "openshift_version == '4.5'"
+
+     
+- name: Image files added to the web server
+  file:
+     path: /var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/images
+     state: directory
+     recurse: true
+
+- name: Ignitions files in the web server
+  file:
+     path: /var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/ignitions
+     state: directory
+     recurse: true
+
+- name: Download required image files
+  get_url:
+    url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/4.4.3/rhcos-4.4.3-x86_64-metal.x86_64.raw.gz
+    dest: /var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/images
+  when: "openshift_version == '4.4'"
+
+
+- name: Download required image files
+  get_url:
+    url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/rhcos-4.5.2-x86_64-metal.x86_64.raw.gz
+    dest: /var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/images
+  when: "openshift_version == '4.5'"
+
+- name: Injecting PXE menu
+  template:
+    src: templates/tftp_default.j2
+    dest: /var/lib/tftpboot/pxelinux.cfg/default
+
+- name: Creating pxeboot file for Masters
+  template:
+    src: templates/masters.j2
+    dest: "/var/lib/tftpboot/pxelinux.cfg/01-{{ item.mac_address | regex_replace(':', '-') }}"
+  loop:
+    - "{{ master01 }}"
+    - "{{ master02 }}"
+    - "{{ master03 }}"
+
+- name: Creating pxeboot file for Workers
+  template:
+    src: templates/workers.j2
+    dest: "/var/lib/tftpboot/pxelinux.cfg/01-{{ item.mac_address | regex_replace(':', '-') }}"
+  loop:
+    - "{{ worker01 }}"
+    - "{{ worker02 }}"
+    - "{{ worker03 }}"
+ 
+- name: Creating pxeboot file for Bootstrap
+  template:
+    src: templates/bootstrap.j2
+    dest: "/var/lib/tftpboot/pxelinux.cfg/01-{{ bootstrap.mac_address | regex_replace(':', '-') }}"
+
+- name: Restore SELinux Context for PXE files
+  shell: restorecon -RF /var/lib/tftpboot/
+  ignore_errors: true
+   
+- name: Restore SELinux Context for webserver files
+  shell: restorecon -RF /var/www/html/
+  ignore_errors: true
+  
+- name: Start and enable httpd
+  service:
+    name: httpd
+    state: restarted
+    enabled: true
+
+- name: Enabling required services throgh firewall
+  firewalld:
+    service: "{{ item }}"
+    state: enabled
+    permanent: true
+    immediate: true
+  loop:
+    - dhcp
+    - dns
+    - http
+    - https
+    - tftp
+- name: Open firewall port
+  firewalld:
+    port: 8080/tcp
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: restart dnsmasq
+  service:
+    name: dnsmasq
+    state: restarted
+... 
+

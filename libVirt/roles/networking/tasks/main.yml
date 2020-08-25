@@ -1,0 +1,4 @@
+---
+- include: build_kvm_network.yml
+  when: kvm_install
+...

@@ -1,0 +1,11 @@
+---
+- name: installed all required packages
+  yum:
+    name: "{{ packages }}"
+    state: present
+
+- name: ansible installed
+  yum:
+    name: "ansible"
+    state: present
+...

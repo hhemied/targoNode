@@ -1,0 +1,23 @@
+---
+    
+- name: Building the bastion host
+  include_tasks: vm-add.yml
+
+- name: add authorized key
+  include_tasks: add-key.yml
+#- name: "Building Bastion Host"
+#  block:
+#    - name: "Creating the bastion node"  
+#      include: vm-add.yml kvm_vm="{{ add_item }}"
+#      with_items: "{{ kvm_vms }}"
+#      loop_control:
+#        loop_var: add_item
+#  when:
+#    - "'bastion' in kvm_vm.name"
+#  ignore_errors: true
+#
+#- name: add the authorized key
+#  include_tasks: add_key.yml
+#
+...
+

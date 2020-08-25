@@ -1,0 +1,44 @@
+---
+- name: Installing HAProxy package
+  yum:
+    name: haproxy
+    state: present
+
+- name: Adding the cluser haproxy configuration
+  template:
+    src: "templates/haproxy.cfg.j2"
+    dest: "/etc/haproxy/haproxy.cfg"
+    backup: true
+    owner: root
+    group: root
+
+- name: Configure SELinux
+  seport:
+    ports: "{{ item }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+  loop:
+    - "6443"
+    - "22623"
+    - "32700"
+
+- name: HAProxy restarted and enabled
+  service:
+    name: haproxy
+    state: restarted
+    enabled: true
+
+- name: Open firewall ports
+  firewalld:
+    port: "{{ item }}"
+    state: enabled
+    immediate: true
+    permanent: true
+  loop:
+    - "6443/tcp"
+    - "22623/tcp"
+    - "32700/tcp"
+
+
+...

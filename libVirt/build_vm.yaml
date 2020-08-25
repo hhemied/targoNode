@@ -1,0 +1,13 @@
+---
+- hosts:
+    - localhost
+  roles:
+    - networking
+    - build_kvm_vm
+
+- hosts: bastion
+  vars:
+    - dhcp: false
+  roles:
+    - configure_bastion
+...

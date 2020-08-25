@@ -1,0 +1,12 @@
+---
+- name: Chrony package installed
+  yum:
+    name: chrony        
+    state: present
+    
+- name: Chronyd service restarted
+  service: 
+    name: chronyd
+    state: restarted
+    enabled: true
+...

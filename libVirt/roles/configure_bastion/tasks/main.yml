@@ -1,0 +1,35 @@
+---
+- name: Waiting for the bastion to boot
+  wait_for:
+    path:  /etc/motd
+    state: present
+    msg: "The system seems to be down"
+  delegate_to: localhost
+
+- name: add authorized key
+  include_tasks: add-key.yml
+
+- name: Local SSH key
+  include_tasks: ssh-key.yml
+
+- name: installing packages
+  include_tasks: install_pkgs.yml
+
+- name: DNS configuration
+  include_tasks: dns.yml        
+ 
+- name: Chrony NTP
+  include_tasks: chrony.yml
+
+- name: HAProxy
+  include_tasks: haproxy.yml
+
+- name: PXE Boot configuration
+  include_tasks: tftpboot.yml
+
+- name: Openshift-tools
+  include_tasks: openshift-tools.yml
+
+- name: Build and publish ignition files
+  include_tasks: build_ign.yml
+...

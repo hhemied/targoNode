@@ -1,0 +1,47 @@
+---
+- name: Backup for install-config file
+  template:
+    src: "templates/install-config.j2"
+    dest: "{{ lookup('env','HOME')}}/install-config.yaml.backup"
+
+- name: Installing the install-config file
+  template:
+    src: "templates/install-config.j2"
+    dest: "{{ lookup('env','HOME')}}/{{ cluster_id }}/install-config.yaml"
+
+- name: Create manifest 
+  shell: "openshift-install create manifests --dir {{ lookup('env','HOME')}}/{{ cluster_id }}"
+
+- name: Change Masters to unscheduable
+  lineinfile:
+    line: "  mastersSchedulable: false"
+    regexp: "mastersSchedulable: true"
+    path: "{{ lookup('env','HOME')}}/{{ cluster_id }}/manifests/cluster-scheduler-02-config.yml"
+
+- name: Create ignition files
+  shell: "openshift-install create ignition-configs --dir {{ lookup('env','HOME')}}/{{ cluster_id }}"
+
+- name: Publish ignition files
+  copy:
+    src: "{{ lookup('env','HOME')}}/{{ cluster_id }}/{{ item }}"
+    dest: "/var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/ignitions"
+    remote_src: true
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - worker.ign
+    - master.ign
+    - bootstrap.ign
+
+- name: Restore SELinux context
+  shell: "restorecon -RFv /var/www/html"
+
+- name: Restart {{ item }}
+  service:
+    name: {{ item }}
+    state: restarted
+  loop:
+    - dnsmasq
+    - haproxy
+...

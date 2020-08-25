@@ -1,0 +1,33 @@
+---
+- name: " Configure the kickstart file"
+  template:
+    src: "ks.cfg.j2"
+    dest: "{{ ks_source }}"
+
+
+- name: "create VMs {{ bastion.fqdn }}"
+  shell: >
+    virt-install -n {{ bastion.fqdn }}
+    --os-type=Linux --os-variant=rhel7
+    --ram={{ bastion.ram }}
+    --vcpus={{ bastion.cpu }} 
+    --pxe
+    --disk pool={{ pool }},bus=virtio,size={{ bastion.disk_size }} 
+    --graphic vnc
+    --location '/var/lib/libvirt/isos/CentOS-7-x86_64-Minimal-2003.iso'
+    --network network={{ cluster_id }},mac={{ bastion.mac_address }}
+    --initrd-inject={{ ks_source }} --extra-args "ks=file:/ks.cfg"
+  register: virt_cmd
+  ignore_errors: true
+
+- name: waiting the machine to reboot
+  wait_for:
+    timeout: 10
+
+- name: Waiting for the bastion to boot
+  wait_for:
+    path:  /etc/motd
+    state: present
+    msg: "The system seems to be down"
+  delegate_to: localhost
+...

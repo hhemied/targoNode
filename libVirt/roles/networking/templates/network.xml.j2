@@ -1,0 +1,12 @@
+<network>
+  <name>{{ cluster_id }}</name>
+  <forward dev='{{ host_iface }}' mode='nat'>
+    <nat>
+      <port start='0' end='65535'/>
+    </nat>
+    <interface dev='enp4s0'/>
+  </forward>
+  <bridge name='{{ cluster_id }}' stp='on' delay='0'/>
+  <ip address='{{ cluster_gateway }}' netmask='255.255.255.0'>
+  </ip>
+</network>

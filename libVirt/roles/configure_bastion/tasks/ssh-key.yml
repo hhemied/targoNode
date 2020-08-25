@@ -1,0 +1,15 @@
+--- 
+- name: Building the ssh to be used for openshift installer and openshift access
+  openssh_keypair:
+    path: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+    size: 4096
+    type: rsa
+    force: true
+
+- name: Adding ssh key to the play variables
+  shell: "cat /root/.ssh/id_rsa.pub"
+  register: key
+
+- name: adding the ssh_key
+  set_fact:
+    ssh_key: "{{ key.stdout }}"

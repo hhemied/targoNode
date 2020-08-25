@@ -1,0 +1,8 @@
+[local]
+localhost ansible_connection=local
+[bastion]
+bastion.ocp443.openshift4me.com ansible_host="192.168.50.10" ansible_user="root" ansible_password="redhat"
+[masters]
+[workers]
+
+

@@ -1,0 +1,26 @@
+---
+- name: " Configure the kickstart file"
+  template:
+    src: "ks.cfg.j2"
+    dest: "{{ ks_source }}"
+
+
+- name: "create VMs {{ kvm_vm.name }}"
+  shell: >
+    virt-install -n {{ kvm_vm.name }}
+    --os-type=Linux --os-variant=rhel7
+    --ram={{ kvm_vm.ram }}
+    --vcpus={{ kvm_vm.cpu }} 
+    --pxe
+    --disk pool={{ kvm_vm.pool }},bus=virtio,size={{ kvm_vm.disk_size }} 
+    --graphic vnc
+    --location '/var/lib/libvirt/isos/CentOS-7-x86_64-Minimal-2003.iso'
+    --network network={{ cluster_id }},mac={{ kvm_vm.mac_address }}
+    --initrd-inject={{ ks_source }} --extra-args "ks=file:/ks.cfg"
+  register: virt_cmd
+
+- name: Waiting 60 sec for the bastion to boot
+  wait_for:
+    timeout: 60 
+  delegate_to: localhost
+...

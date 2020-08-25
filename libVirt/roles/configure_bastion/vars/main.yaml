@@ -1,0 +1,14 @@
+---
+packages:
+  - epel-release.noarch
+  - vim
+  - dnsmasq
+  - bind-utils
+  - git
+  - centos-release-ansible-29.noarch
+  - bash-completion
+  - syslinux
+  - httpd
+  - wget
+  - policycoreutils-python
+...

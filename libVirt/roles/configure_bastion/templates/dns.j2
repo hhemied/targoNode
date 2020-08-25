@@ -1,0 +1,31 @@
+expand-hosts
+no-resolv
+no-poll
+domain-needed
+domain={{ cluster_id }}.{{ cluster_domain }}
+local=/{{ cluster_id }}.{{ cluster_domain }}/
+address=/.apps.{{ cluster_id }}.{{ cluster_domain }}/{{ bastion.address }}
+srv-host=_etcd-server-ssl._tcp,etcd-0.{{ cluster_id }}.{{ cluster_domain }},2380
+srv-host=_etcd-server-ssl._tcp,etcd-1.{{ cluster_id }}.{{ cluster_domain }},2380
+srv-host=_etcd-server-ssl._tcp,etcd-2.{{ cluster_id }}.{{ cluster_domain }},2380
+server={{ cluster_gateway }}
+server=8.8.8.8
+addn-hosts=/etc/{{ cluster_id }}.{{ cluster_domain}}-hosts
+
+dhcp-option=option:router,{{ cluster_gateway }}
+dhcp-option=option:dns-server,{{ bastion.address }}
+
+dhcp-range=eth,{{ dhcp_start }} ,{{ dhcp_end }},30m
+dhcp-host={{ bastion.mac_address }},{{ bastion.address }}
+dhcp-host={{ bootstrap.mac_address }},{{ bootstrap.address }}
+dhcp-host={{ master01.mac_address }},{{ master01.address }}
+dhcp-host={{ master02.mac_address }},{{ master02.address }}
+dhcp-host={{ master03.mac_address }},{{ master03.address }}
+dhcp-host={{ worker01.mac_address }},{{ worker01.address }}
+dhcp-host={{ worker02.mac_address }},{{ worker02.address }}
+dhcp-host={{ worker03.mac_address }},{{ worker03.address }}
+
+enable-tftp
+tftp-root=/var/lib/tftpboot
+dhcp-boot=pxelinux.0,linuxhint,{{ bastion.address }}
+pxe-prompt="Press F8 for PXE Network Boot",5

@@ -1,0 +1,5 @@
+virt-install --name="ocp4-aHelper" --vcpus=2 --ram=8192 \
+--disk path=/var/lib/libvirt/images/ocp4-aHelper.qcow2,bus=virtio,size=50 \
+--os-variant centos8 --network network=ocp44,model=virtio \
+--boot hd,menu=on --location /var/lib/libvirt/ISO/CentOS-8.2.2004-x86_64-minimal.iso \
+--initrd-inject helper-ks.cfg --extra-args "inst.ks=file:/home/hhemied/.ansible/helpernode/helper-ks.cfg" --noautoconsole

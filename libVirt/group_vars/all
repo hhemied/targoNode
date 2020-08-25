@@ -1,0 +1,91 @@
+---
+#kvm_vm.network: "internal"
+openshift_version: "4.4"
+openshift_sub_version: "13"
+ks_source: "/var/lib/libvirt/images/ks.cfg"
+kvm_install: true
+build_dns: false
+build_haproxy: false
+build_dhcp: false
+build_pxe: false
+pool: "images"
+network_dns: "192.168.50.1"
+dhcp_start: "192.168.50.20"
+dhcp_end: "192.168.50.100"
+cluster_id: "ocp443"
+cluster_domain: "openshift4me.com"
+cluster_gateway: "192.168.50.1"
+cluster_net: "192.168.50.0"
+pull_key: '{"auths":{"cloud.openshift.com":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K3Jobmdwc2hoZW1pZWQxeWRqaWxncnBpaGN2ZGpuYnZxdHp0azQwZXY6NDdBT0UwRE1ZR0Y2RjRKWU0zN05VSUZHWjk2RE4wR1VFTlo4MTFPVUk5T05YRlRZRDFOM1pJTFNaU1dWUENWMg==","email":"hhemied@redhat.com"},"quay.io":{"auth":"b3BlbnNoaWZ0LXJlbGVhc2UtZGV2K3Jobmdwc2hoZW1pZWQxeWRqaWxncnBpaGN2ZGpuYnZxdHp0azQwZXY6NDdBT0UwRE1ZR0Y2RjRKWU0zN05VSUZHWjk2RE4wR1VFTlo4MTFPVUk5T05YRlRZRDFOM1pJTFNaU1dWUENWMg==","email":"hhemied@redhat.com"},"registry.connect.redhat.com":{"auth":"NTMxOTM5NDV8dWhjLTFZREppTEdyUGloY1ZkSk5idnF0WlRLNDBFVjpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSTVPVFkxTkRnd09ESXdNV00wTnprNFlUVXlZamMxTlRBMU56STVNV1F3TXlKOS5HOFhXcVpmUW9lYXZ5UTlUeExxVnNKeVBEaFM4TUdHRlJCQXk0b0FuM1dFTkt3R3F2RFZSS01mMjFrYW43VWYzZy1CUnhZWWJIYmx5Z3ZpMHZ1bEI4U2FabGpqSG1CWmZ5bzFNUzdaamJmZEtmNkVIbjRldkg2dVVNbTgwc1pvMWJxUFJmaTRWbndDOUN3c3VicVA4NG5mQk5uWHNDOHZsLWltdDlhckV5bFlKWVNwMGU0aWhYalc4eGRQREk1WXZZaWdzWGdaV0d0Wi1fSWQ3R0UxMTdyU1lWSDh1YmFHV2h4NTZxUFh5N1diSXNuUEM0MnREeEJXZldqMkxQR0tOVVNYQXJ1SGVyNlpHVGlKRllKTWh5aFZEQzJWTzB2cjBLV3F6RHB0SGxydXg0NlFHTmRPakZ2WldVSWNzdVhqUHZxLVZ4SFNfUm1ZSmkyTEo3OFJQWUtoU3RTbjAyT0xFZmdZU0dEUkNoUlpMbmZjUE5FZ3pyTzZzbDh3eHJZOE1ITnoybGVaRXk1djVTSnVTbmhaVGNFZl9nbklHWUVrTzlxVmxsMTRseVFwWWxsaGdLV2ItUXhfOWxsWXlncWF5TlkwbG5feDJfSHpaN3dsUTFLajFvcXVjc29iYU83QXg1OFl4VF9BdnBqXzE0Xy1YTXNxLWtyWll6MnpGbnlKY2xkNE9FS1Z3Ul84MmY4M1oxR3BaNGx1V3AxUjl0Nm56alpZS2RJUjlOYmVDVmE1U1BRQWl3RHNCcWV3RWRBRE5jUTZET0didWtERVN4YS1PZ19IdVNEbmZZdHYydXhMNzY0a0NUY0VuYzNCVTl0Ui0wY0FJQVhLRV9oRUJzWXRRbW5VX2JfdVFMLUMtdHEwTTkxN0ZYcDk4Z3kyd1Y2SGwxeXpoOGI0LXpJUQ==","email":"hhemied@redhat.com"},"registry.redhat.io":{"auth":"NTMxOTM5NDV8dWhjLTFZREppTEdyUGloY1ZkSk5idnF0WlRLNDBFVjpleUpoYkdjaU9pSlNVelV4TWlKOS5leUp6ZFdJaU9pSTVPVFkxTkRnd09ESXdNV00wTnprNFlUVXlZamMxTlRBMU56STVNV1F3TXlKOS5HOFhXcVpmUW9lYXZ5UTlUeExxVnNKeVBEaFM4TUdHRlJCQXk0b0FuM1dFTkt3R3F2RFZSS01mMjFrYW43VWYzZy1CUnhZWWJIYmx5Z3ZpMHZ1bEI4U2FabGpqSG1CWmZ5bzFNUzdaamJmZEtmNkVIbjRldkg2dVVNbTgwc1pvMWJxUFJmaTRWbndDOUN3c3VicVA4NG5mQk5uWHNDOHZsLWltdDlhckV5bFlKWVNwMGU0aWhYalc4eGRQREk1WXZZaWdzWGdaV0d0Wi1fSWQ3R0UxMTdyU1lWSDh1YmFHV2h4NTZxUFh5N1diSXNuUEM0MnREeEJXZldqMkxQR0tOVVNYQXJ1SGVyNlpHVGlKRllKTWh5aFZEQzJWTzB2cjBLV3F6RHB0SGxydXg0NlFHTmRPakZ2WldVSWNzdVhqUHZxLVZ4SFNfUm1ZSmkyTEo3OFJQWUtoU3RTbjAyT0xFZmdZU0dEUkNoUlpMbmZjUE5FZ3pyTzZzbDh3eHJZOE1ITnoybGVaRXk1djVTSnVTbmhaVGNFZl9nbklHWUVrTzlxVmxsMTRseVFwWWxsaGdLV2ItUXhfOWxsWXlncWF5TlkwbG5feDJfSHpaN3dsUTFLajFvcXVjc29iYU83QXg1OFl4VF9BdnBqXzE0Xy1YTXNxLWtyWll6MnpGbnlKY2xkNE9FS1Z3Ul84MmY4M1oxR3BaNGx1V3AxUjl0Nm56alpZS2RJUjlOYmVDVmE1U1BRQWl3RHNCcWV3RWRBRE5jUTZET0didWtERVN4YS1PZ19IdVNEbmZZdHYydXhMNzY0a0NUY0VuYzNCVTl0Ui0wY0FJQVhLRV9oRUJzWXRRbW5VX2JfdVFMLUMtdHEwTTkxN0ZYcDk4Z3kyd1Y2SGwxeXpoOGI0LXpJUQ==","email":"hhemied@redhat.com"}}}'
+bastion:
+  name: "bastion"
+  fqdn: "bastion.{{ cluster_id }}.{{ cluster_domain }}"
+  address: "192.168.50.10"
+  mac_address: "52:54:00:9f:85:95"
+  disk_size: 50
+  ram: 4096
+  cpu: 2
+
+bootstrap:
+  name: "bootstrap"
+  fqdn: "bootstrap.{{ cluster_id }}.{{ cluster_domain }}"
+  address: "192.168.50.30"
+  mac_address: "52:54:00:9f:85:90"
+  disk_size: 50
+  ram: 4096
+  cpu: 2
+
+master01:
+  name: "master01"
+  fqdn: "master01.{{ cluster_id }}.{{ cluster_domain }}"
+  address: "192.168.50.20"
+  mac_address: "52:54:00:9f:85:91"
+  disk_size: 50
+  ram: 4096
+  cpu: 2
+
+master02:
+  name: "master02"
+  fqdn: "master02.{{ cluster_id }}.{{ cluster_domain }}"
+  address: "192.168.50.21"
+  mac_address: "52:54:00:9f:85:92"
+  disk_size: 50
+  ram: 4096
+  cpu: 2
+
+master03:
+  name: "master03"
+  fqdn: "master03.{{ cluster_id }}.{{ cluster_domain }}"
+  address: "192.168.50.22"
+  mac_address: "52:54:00:9f:85:93"
+  disk_size: 50
+  ram: 4096
+  cpu: 2
+
+worker01:
+  name: "worker01"
+  fqdn: "worker01.{{ cluster_id }}.{{ cluster_domain }}"
+  address: "192.168.50.40"
+  mac_address: "52:54:00:9f:85:94"
+  disk_size: 50
+  ram: 4096
+  cpu: 2
+
+worker02:
+  name: "worker02"
+  fqdn: "worker02.{{ cluster_id }}.{{ cluster_domain }}"
+  address: "192.168.50.41"
+  mac_address: "52:54:00:9f:85:96"
+  disk_size: 50
+  ram: 4096
+  cpu: 2
+
+worker03:
+  name: "worker03"
+  fqdn: "worker03.{{ cluster_id }}.{{ cluster_domain }}"
+  address: "192.168.50.42"
+  mac_address: "52:54:00:9f:85:97"
+  disk_size: 50
+  ram: 4096
+  cpu: 2
+...

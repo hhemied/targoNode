@@ -1,0 +1,31 @@
+---
+- name: adding the required dns entries
+  template: 
+    src: templates/hosts.j2
+    dest: "/etc/{{ cluster_id }}.{{ cluster_domain}}-hosts"
+
+- name: Building the forward and reverse dns
+  template:
+    src: templates/dns.j2
+    dest: "/etc/dnsmasq.d/{{ cluster_id }}.{{ cluster_domain }}"
+  notify: restart dnsmasq
+
+- name: enabling and restarting dnsmasq
+  service:
+     name: dnsmasq
+     state: started
+     enabled: true
+
+- name: Configure the network connection for the new dns server
+  nmcli:
+     conn_name: eth0
+     dns4: "{{ bastion.address }}"
+     dns4_search: "{{ cluster_id }}.{{ cluster_domain }}"
+     state: present
+     type: ethernet
+  notify: restart NetworkManager
+      
+     #- name: disable the dns auto
+     #  shell:  nmcli connection modify eth0 ipv4.ignore-auto-dns no
+     #
+...
