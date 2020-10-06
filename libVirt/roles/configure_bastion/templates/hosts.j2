@@ -3,9 +3,6 @@
 {{ bastion.address }}	api-int
 {{ bootstrap.address }} {{ bootstrap.name }}
 
-{# {% for master in {{ masters }} %} #}
-{# {{ master.address }}   {{ master.fqdn }}  {{ master.name }} #}
-{# {% endfor %} #}
 
 {% for master in {{ masters }} %}
 {{ master.address }} etcd-{{ loop.index }}
