@@ -35,57 +35,53 @@ bootstrap:
   ram: 4096
   cpu: 2
 
-master01:
-  name: "master01"
-  fqdn: "master01.{{ cluster_id }}.{{ cluster_domain }}"
-  address: "192.168.50.20"
-  mac_address: "52:54:00:9f:85:91"
-  disk_size: 50
-  ram: 4096
-  cpu: 2
+masters:
+  - name: "master01"
+    fqdn: "master01.{{ cluster_id }}.{{ cluster_domain }}"
+    address: "192.168.50.20"
+    mac_address: "52:54:00:9f:85:91"
+    disk_size: 50
+    ram: 4096
+    cpu: 2
 
-master02:
-  name: "master02"
-  fqdn: "master02.{{ cluster_id }}.{{ cluster_domain }}"
-  address: "192.168.50.21"
-  mac_address: "52:54:00:9f:85:92"
-  disk_size: 50
-  ram: 4096
-  cpu: 2
+  - name: "master02"
+    fqdn: "master02.{{ cluster_id }}.{{ cluster_domain }}"
+    address: "192.168.50.21"
+    mac_address: "52:54:00:9f:85:92"
+    disk_size: 50
+    ram: 4096
+    cpu: 2
 
-master03:
-  name: "master03"
-  fqdn: "master03.{{ cluster_id }}.{{ cluster_domain }}"
-  address: "192.168.50.22"
-  mac_address: "52:54:00:9f:85:93"
-  disk_size: 50
-  ram: 4096
-  cpu: 2
+  - name: "master03"
+    fqdn: "master03.{{ cluster_id }}.{{ cluster_domain }}"
+    address: "192.168.50.22"
+    mac_address: "52:54:00:9f:85:93"
+    disk_size: 50
+    ram: 4096
+    cpu: 2
 
-worker01:
-  name: "worker01"
-  fqdn: "worker01.{{ cluster_id }}.{{ cluster_domain }}"
-  address: "192.168.50.40"
-  mac_address: "52:54:00:9f:85:94"
-  disk_size: 50
-  ram: 4096
-  cpu: 2
+workers:
+  - name: "worker01"
+    fqdn: "worker01.{{ cluster_id }}.{{ cluster_domain }}"
+    address: "192.168.50.40"
+    mac_address: "52:54:00:9f:85:94"
+    disk_size: 50
+    ram: 4096
+    cpu: 2
 
-worker02:
-  name: "worker02"
-  fqdn: "worker02.{{ cluster_id }}.{{ cluster_domain }}"
-  address: "192.168.50.41"
-  mac_address: "52:54:00:9f:85:96"
-  disk_size: 50
-  ram: 4096
-  cpu: 2
+  - name: "worker02"
+    fqdn: "worker02.{{ cluster_id }}.{{ cluster_domain }}"
+    address: "192.168.50.41"
+    mac_address: "52:54:00:9f:85:96"
+    disk_size: 50
+    ram: 4096
+    cpu: 2
 
-worker03:
-  name: "worker03"
-  fqdn: "worker03.{{ cluster_id }}.{{ cluster_domain }}"
-  address: "192.168.50.42"
-  mac_address: "52:54:00:9f:85:97"
-  disk_size: 50
-  ram: 4096
-  cpu: 2
+  - name: "worker03"
+    fqdn: "worker03.{{ cluster_id }}.{{ cluster_domain }}"
+    address: "192.168.50.42"
+    mac_address: "52:54:00:9f:85:97"
+    disk_size: 50
+    ram: 4096
+    cpu: 2
 ...
