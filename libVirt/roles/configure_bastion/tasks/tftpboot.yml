@@ -88,15 +88,13 @@
   template:
     src: templates/masters.j2
     dest: "/var/lib/tftpboot/pxelinux.cfg/01-{{ item.mac_address | regex_replace(':', '-') }}"
-  loop:
-    - "{{ masters }}"
+  loop: "{{ masters }}"
 
 - name: Creating pxeboot file for Workers
   template:
     src: templates/workers.j2
     dest: "/var/lib/tftpboot/pxelinux.cfg/01-{{ item.mac_address | regex_replace(':', '-') }}"
-  loop:
-    - "{{ workers }}"
+  loop: "{{ workers }}"
 
 - name: Creating pxeboot file for Bootstrap
   template:
