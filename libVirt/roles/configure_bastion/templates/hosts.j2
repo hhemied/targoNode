@@ -2,16 +2,16 @@
 {{ bastion.address }}	api
 {{ bastion.address }}	api-int
 {{ bootstrap.address }} {{ bootstrap.name }}
-{% for item in [master01, master02, master03] %}
-{{ item.address }}   {{ item.name }}
+
+{% for master in {{ masters }} %}
+{{ master.address }}   {{ master.fqdn }}  {{ master.name }}
 {% endfor %}
 
-{{ master01.address }} etcd-0
-{{ master02.address }} etcd-1
-{{ master03.address }} etcd-2
+{% for master in {{ masters }} %}
+{{ master.address }} etcd-{{ loop.index }}
+{% endfor %}
 
 
-
-{% for item in [worker01, worker02, worker03] %}
-{{ item.address }}   {{ item.name }}
+{% for worker in {{ workers }} %}
+{{ worker.address }}   {{ worker.name }}
 {% endfor %}
