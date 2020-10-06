@@ -12,9 +12,9 @@ backend kubernetes_api
     balance roundrobin
     option ssl-hello-chk
     server bootstap bootstrap.{{ cluster_id }}.{{ cluster_domain }}:6443 check
-    server master01 master01.{{ cluster_id }}.{{ cluster_domain }}:6443 check
-    server master02 master02.{{ cluster_id }}.{{ cluster_domain }}:6443 check
-    server master03 master03.{{ cluster_id }}.{{ cluster_domain }}:6443 check
+    {% for master in {{ masters }} %}
+    server {{ master.name}} {{ master.fqdn }}:6443 check
+    {% endfor %}
 
 frontend machine_config
     bind 0.0.0.0:22623
@@ -24,9 +24,9 @@ backend machine_config
     balance roundrobin
     option ssl-hello-chk
     server bootstrap bootstrap.{{ cluster_id }}.{{ cluster_domain }}:22623 check
-    server master01 master01.{{ cluster_id }}.{{ cluster_domain }}:22623 check
-    server master02 master02.{{ cluster_id }}.{{ cluster_domain }}:22623 check
-    server master03 master03.{{ cluster_id }}.{{ cluster_domain }}:22623 check
+    {% for master in {{ masters }} %}
+    server {{ master.name}} {{ master.fqdn }}:22623 check
+    {% endfor %}
 
 frontend router_https
     bind 0.0.0.0:443
@@ -35,9 +35,9 @@ frontend router_https
 backend router_https
     balance roundrobin
     option ssl-hello-chk
-    server worker01 worker01.{{ cluster_id }}.{{ cluster_domain }}:443 check
-    server worker02 worker02.{{ cluster_id }}.{{ cluster_domain }}:443 check
-    server worker03 worker03.{{ cluster_id }}.{{ cluster_domain }}:443 check
+    {% for worker in {{ workers }} %}
+    server {{ worker.name }} {{ worker.fqdn }}:443 check
+    {% endfor %}
 
 frontend router_http
     mode http
@@ -48,7 +48,7 @@ frontend router_http
 backend router_http
     mode http
     balance roundrobin
-    server worker01 worker01.{{ cluster_id }}.{{ cluster_domain }}:80 check
-    server worker02 worker02.{{ cluster_id }}.{{ cluster_domain }}:80 check
-    server worker03 worker03.{{ cluster_id }}.{{ cluster_domain }}:80 check
+    {% for worker in {{ workers }} %}
+    server {{ worker.name }} {{ worker.fqdn }}:80 check
+    {% endfor %}
 
