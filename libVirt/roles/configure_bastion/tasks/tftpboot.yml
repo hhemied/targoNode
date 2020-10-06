@@ -16,7 +16,7 @@
   with_fileglob:
     - "/usr/share/syslinux/*"
   ignore_errors: true
-    
+
 
 - name: Configure the webserver to serve PXE files
   lineinfile:
@@ -49,11 +49,11 @@
     url: "{{ item }}"
     dest: /var/lib/tftpboot/openshift{{ openshift_version }}/{{ openshift_version }}
   loop:
-    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/rhcos-4.5.2-x86_64-installer-kernel-x86_64 
+    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/rhcos-4.5.2-x86_64-installer-kernel-x86_64
     - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/rhcos-4.5.2-x86_64-installer-initramfs.x86_64.img
   when: "openshift_version == '4.5'"
 
-     
+
 - name: Image files added to the web server
   file:
      path: /var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/images
@@ -89,19 +89,15 @@
     src: templates/masters.j2
     dest: "/var/lib/tftpboot/pxelinux.cfg/01-{{ item.mac_address | regex_replace(':', '-') }}"
   loop:
-    - "{{ master01 }}"
-    - "{{ master02 }}"
-    - "{{ master03 }}"
+    - "{{ masters }}"
 
 - name: Creating pxeboot file for Workers
   template:
     src: templates/workers.j2
     dest: "/var/lib/tftpboot/pxelinux.cfg/01-{{ item.mac_address | regex_replace(':', '-') }}"
   loop:
-    - "{{ worker01 }}"
-    - "{{ worker02 }}"
-    - "{{ worker03 }}"
- 
+    - "{{ workers }}"
+
 - name: Creating pxeboot file for Bootstrap
   template:
     src: templates/bootstrap.j2
@@ -110,11 +106,11 @@
 - name: Restore SELinux Context for PXE files
   shell: restorecon -RF /var/lib/tftpboot/
   ignore_errors: true
-   
+
 - name: Restore SELinux Context for webserver files
   shell: restorecon -RF /var/www/html/
   ignore_errors: true
-  
+
 - name: Start and enable httpd
   service:
     name: httpd
@@ -144,5 +140,5 @@
   service:
     name: dnsmasq
     state: restarted
-... 
+...
 
