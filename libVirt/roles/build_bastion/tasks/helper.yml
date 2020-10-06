@@ -1,7 +1,0 @@
----
-- name: helper node cloned
-  git:
-    repo: 'https://github.com/RedHatOfficial/ocp4-helpernode'
-    dest: /root/helper
-    update: yes
-...
