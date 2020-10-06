@@ -4,8 +4,4 @@
     name: "{{ packages }}"
     state: present
 
-- name: ansible installed
-  yum:
-    name: "ansible"
-    state: present
 ...
