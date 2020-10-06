@@ -12,7 +12,7 @@ backend kubernetes_api
     balance roundrobin
     option ssl-hello-chk
     server bootstap bootstrap.{{ cluster_id }}.{{ cluster_domain }}:6443 check
-    {% for master in {{ masters }} %}
+    {% for master in masters %}
     server {{ master.name}} {{ master.fqdn }}:6443 check
     {% endfor %}
 
@@ -24,7 +24,7 @@ backend machine_config
     balance roundrobin
     option ssl-hello-chk
     server bootstrap bootstrap.{{ cluster_id }}.{{ cluster_domain }}:22623 check
-    {% for master in {{ masters }} %}
+    {% for master in masters %}
     server {{ master.name}} {{ master.fqdn }}:22623 check
     {% endfor %}
 
@@ -35,7 +35,7 @@ frontend router_https
 backend router_https
     balance roundrobin
     option ssl-hello-chk
-    {% for worker in {{ workers }} %}
+    {% for worker in workers %}
     server {{ worker.name }} {{ worker.fqdn }}:443 check
     {% endfor %}
 
@@ -48,7 +48,7 @@ frontend router_http
 backend router_http
     mode http
     balance roundrobin
-    {% for worker in {{ workers }} %}
+    {% for worker in workers %}
     server {{ worker.name }} {{ worker.fqdn }}:80 check
     {% endfor %}
 

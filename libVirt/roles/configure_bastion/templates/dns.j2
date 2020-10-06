@@ -21,11 +21,11 @@ dhcp-range=eth,{{ dhcp_start }} ,{{ dhcp_end }},30m
 dhcp-host={{ bastion.mac_address }},{{ bastion.address }}
 dhcp-host={{ bootstrap.mac_address }},{{ bootstrap.address }}
 
-{% for master in {{ masters }} %}
+{% for master in masters %}
 dhcp-host={{ master.mac_address }},{{ master.address }}
 {% endfor %}
 
-{% for worker in {{ worker }} %}
+{% for worker in workers %}
 dhcp-host={{ worker.mac_address }},{{ worker.address }}
 {% endfor %}
 
