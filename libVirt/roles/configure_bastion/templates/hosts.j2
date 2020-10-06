@@ -13,5 +13,5 @@
 
 
 {% for worker in {{ workers }} %}
-{{ worker.address }}   {{ worker.name }}
+{{ worker.address }}   {{ worker.fqdn }}  {{ worker.name }}
 {% endfor %}
