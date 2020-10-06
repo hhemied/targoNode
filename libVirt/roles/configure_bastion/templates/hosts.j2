@@ -1,14 +1,18 @@
-{{ bastion.address }}	{{ bastion.name }}
-{{ bastion.address }}	api
-{{ bastion.address }}	api-int
+{{ bastion.address }} {{ bastion.name }}
+{{ bastion.address }} api
+{{ bastion.address }} api-int
 {{ bootstrap.address }} {{ bootstrap.name }}
 
+{% for master in masters %}
+{{ master.address }} {{ master.fqdn }} {{ master.name }}
+{% endfor %}
 
-{% for master in {{ masters }} %}
-{{ master.address }} etcd-{{ loop.index }}
+{% for master in masters %}
+{{ master.address }} etcd-{{ loop.index0 }}
 {% endfor %}
 
 
-{% for worker in {{ workers }} %}
-{{ worker.address }}   {{ worker.fqdn }}  {{ worker.name }}
+{% for worker in workers %}
+{{ worker.address }} {{ worker.fqdn }} {{ worker.name }}
 {% endfor %}
+
