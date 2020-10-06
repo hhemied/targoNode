@@ -16,14 +16,19 @@ dhcp-option=option:router,{{ cluster_gateway }}
 dhcp-option=option:dns-server,{{ bastion.address }}
 
 dhcp-range=eth,{{ dhcp_start }} ,{{ dhcp_end }},30m
+
+
 dhcp-host={{ bastion.mac_address }},{{ bastion.address }}
 dhcp-host={{ bootstrap.mac_address }},{{ bootstrap.address }}
-dhcp-host={{ master01.mac_address }},{{ master01.address }}
-dhcp-host={{ master02.mac_address }},{{ master02.address }}
-dhcp-host={{ master03.mac_address }},{{ master03.address }}
-dhcp-host={{ worker01.mac_address }},{{ worker01.address }}
-dhcp-host={{ worker02.mac_address }},{{ worker02.address }}
-dhcp-host={{ worker03.mac_address }},{{ worker03.address }}
+
+{% for master in {{ masters }} %}
+dhcp-host={{ master.mac_address }},{{ master.address }}
+{% endfor %}
+
+{% for worker in {{ worker }} %}
+dhcp-host={{ worker.mac_address }},{{ worker.address }}
+{% endfor %}
+
 
 enable-tftp
 tftp-root=/var/lib/tftpboot
