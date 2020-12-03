@@ -8,35 +8,15 @@
   block:
     - name: Installing openshift-install
       unarchive:
-        src: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.4/openshift-install-linux.tar.gz
+        src: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-{{ openshift_version }}/openshift-install-linux.tar.gz
         dest: /usr/local/bin
         remote_src: yes
     
     - name: Installing OC client tools
       unarchive:
-        src: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.4/openshift-client-linux.tar.gz
+        src: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-{{ openshift_version }}/openshift-client-linux.tar.gz
         dest: /usr/local/bin
         remote_src: yes
-
-  when: "openshift_version == '4.4'"
-
-
-
-- name: Installing the openshift tools
-  block:
-    - name: Installing openshift-install
-      unarchive:
-        src: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.5/openshift-install-linux.tar.gz
-        dest: /usr/local/bin
-        remote_src: yes
-    
-    - name: Installing OC client tools
-      unarchive:
-        src: https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest-4.5/openshift-client-linux.tar.gz
-        dest: /usr/local/bin
-        remote_src: yes
-
-  when: "openshift_version == '4.5'"
 
 
 - name: Adding oc completion

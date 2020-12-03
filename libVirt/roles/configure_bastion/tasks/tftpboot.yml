@@ -33,27 +33,14 @@
     owner: root
     group: root
 
-
 - name: Get the RHCOS dependencies
   get_url:
-    url: "{{ item }}"
+    url: "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/{{ openshift_version }}/latest/{{ item }}"
     dest: /var/lib/tftpboot/openshift{{ openshift_version }}/{{ openshift_version }}
   loop:
-    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/4.4.3/rhcos-4.4.3-x86_64-installer-kernel-x86_64
-    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/4.4.3/rhcos-4.4.3-x86_64-installer-initramfs.x86_64.img
-  when: "openshift_version == '4.4'"
+    - rhcos-installer-kernel-x86_64
+    - rhcos-installer-initramfs.x86_64.img
 
-
-- name: Get the RHCOS dependencies
-  get_url:
-    url: "{{ item }}"
-    dest: /var/lib/tftpboot/openshift{{ openshift_version }}/{{ openshift_version }}
-  loop:
-    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/rhcos-4.5.2-x86_64-installer-kernel-x86_64 
-    - https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/rhcos-4.5.2-x86_64-installer-initramfs.x86_64.img
-  when: "openshift_version == '4.5'"
-
-     
 - name: Image files added to the web server
   file:
      path: /var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/images
@@ -68,16 +55,8 @@
 
 - name: Download required image files
   get_url:
-    url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.4/4.4.3/rhcos-4.4.3-x86_64-metal.x86_64.raw.gz
-    dest: /var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/images
-  when: "openshift_version == '4.4'"
-
-
-- name: Download required image files
-  get_url:
-    url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.5/4.5.2/rhcos-4.5.2-x86_64-metal.x86_64.raw.gz
-    dest: /var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/images
-  when: "openshift_version == '4.5'"
+    url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/{{ openshift_version }}/latest/rhcos-metal.x86_64.raw.gz
+    dest: /var/www/html/openshift{{ openshift_version }}/{{ openshift_version }}/images/
 
 - name: Injecting PXE menu
   template:

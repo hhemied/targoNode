@@ -3,5 +3,5 @@ prompt 0
 timeout 1
 
 label worker
- kernel /openshift{{ openshift_version }}/{{ openshift_version }}/rhcos-4.4.3-x86_64-installer-kernel-x86_64
- append ip=dhcp rd.neednet=1 coreos.inst.install_dev=vda console=tty0 console=ttyS0 coreos.inst=yes coreos.inst.image_url=http://{{ bastion.address }}:8080/openshift{{ openshift_version }}/{{ openshift_version }}/images/rhcos-4.4.3-x86_64-metal.x86_64.raw.gz coreos.inst.ignition_url=http://{{ bastion.address }}:8080/openshift{{ openshift_version }}/{{ openshift_version }}/ignitions/worker.ign initrd=/openshift{{ openshift_version }}/{{ openshift_version }}/rhcos-4.4.3-x86_64-installer-initramfs.x86_64.img
+ kernel /openshift{{ openshift_version }}/{{ openshift_version }}/rhcos-installer-kernel-x86_64
+ append ip=dhcp rd.neednet=1 coreos.inst.install_dev=vda console=tty0 console=ttyS0 coreos.inst=yes coreos.inst.image_url=http://{{ bastion.address }}:8080/openshift{{ openshift_version }}/{{ openshift_version }}/images/rhcos-metal.x86_64.raw.gz coreos.inst.ignition_url=http://{{ bastion.address }}:8080/openshift{{ openshift_version }}/{{ openshift_version }}/ignitions/worker.ign initrd=/openshift{{ openshift_version }}/{{ openshift_version }}/rhcos-installer-initramfs.x86_64.img
